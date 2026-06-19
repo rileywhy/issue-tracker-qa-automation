@@ -4,10 +4,11 @@ import { useState } from "react";
 
 type CreateTicketFormProps = {
     loadTickets: () => void;
+    onDelete:() => void;
 }
 
 
-function CreateTicketForm({ loadTickets
+function CreateTicketForm({ loadTickets, onDelete
     
 }: CreateTicketFormProps) {
 
@@ -16,8 +17,10 @@ function CreateTicketForm({ loadTickets
     const [status, setStatus] = useState("");
     const [priority, setPriority] = useState("");
     const [assignee, setAssignee] = useState("");
+
+
     function handleSubmit(event: React.FormEvent) {
-  event.preventDefault();
+    event.preventDefault();
 
   fetch("http://localhost:8080/ticket", {
     method: "POST",

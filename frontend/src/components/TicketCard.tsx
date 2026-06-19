@@ -7,7 +7,14 @@ type TicketCardProps = {
   status: string;
   priority: string;
   assignee: string;
+  createdAt: string;
+  updatedAt: string;
+  id: number;
+  onDelete: () => void;
 };
+
+
+
 
 function TicketCard({
   title,
@@ -15,10 +22,15 @@ function TicketCard({
   status,
   priority,
   assignee,
-  
+  createdAt,
+  updatedAt,
+  id,
+  onDelete,
+
+
 }: TicketCardProps) {
 
-    const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(false);
   return (
     <div className="ticket-card">
       <h2>{title}</h2>
@@ -35,11 +47,21 @@ function TicketCard({
 
       <p>Assigned to: {assignee}</p>
 
-      <p>Created at: {new Date().toLocaleString()}</p>
+      <p>Created at: {new Date(createdAt).toLocaleString()}</p>
 
-      <p>Last updated: {new Date().toLocaleString()}</p>
+      <p>Last updated: {new Date(updatedAt).toLocaleString()}</p>
+      <button onClick={() => deleteTicket()}>
+        Delete Ticket
+      </button>
     </div>
   );
+  function deleteTicket() {
+    fetch(`http://localhost:8080/ticket/${id}`, {
+      method: "DELETE",
+    }).then(() => {
+      onDelete();
+    });
+  }
 }
 
 export default TicketCard;

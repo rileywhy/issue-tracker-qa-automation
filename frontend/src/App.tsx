@@ -9,10 +9,13 @@ type Ticket = {
   status: string;
   priority: string;
   assignee: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 function App() {
   const [tickets, setTickets] = useState<Ticket[]>([]);
+
 
   function loadTickets() {
     fetch("http://localhost:8080/tickets")
@@ -29,15 +32,18 @@ function App() {
       {tickets.map((ticket) => (
         <TicketCard
           key={ticket.id}
+          id={ticket.id}
           title={ticket.title}
           description={ticket.description}
           status={ticket.status}
           priority={ticket.priority}
           assignee={ticket.assignee}
-          
+          createdAt={ticket.createdAt}
+          updatedAt={ticket.updatedAt}
+          onDelete={loadTickets}
         />
       ))}
-      <CreateTicketForm loadTickets={loadTickets} />
+      <CreateTicketForm loadTickets={loadTickets} onDelete={loadTickets}/>
     </main>
   );
 }
