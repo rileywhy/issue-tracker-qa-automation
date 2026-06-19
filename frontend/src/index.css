@@ -63,6 +63,8 @@
 }
 
 body {
+  background-color: #313338;
+  color: #dbdee1;
   margin: 0;
 }
 
@@ -108,4 +110,15 @@ code {
   line-height: 135%;
   padding: 4px 8px;
   background: var(--code-bg);
+}
+
+.ticket-card {
+  background-color: #383a40;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 12px 0;
+}
+
+.ticket-card:hover {
+  background-color: #3f4147;
 }

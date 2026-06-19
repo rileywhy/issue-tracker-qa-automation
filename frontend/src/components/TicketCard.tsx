@@ -15,15 +15,16 @@ function TicketCard({
   status,
   priority,
   assignee,
+  
 }: TicketCardProps) {
 
     const [expanded, setExpanded] = useState(false);
   return (
-    <div>
+    <div className="ticket-card">
       <h2>{title}</h2>
 
       <button onClick={() => setExpanded(!expanded)}>
-        Toggle Description
+        {expanded ? "Hide Details" : "Show Details"}
       </button>
 
       {expanded && <p>{description}</p>}
@@ -33,6 +34,10 @@ function TicketCard({
       </p>
 
       <p>Assigned to: {assignee}</p>
+
+      <p>Created at: {new Date().toLocaleString()}</p>
+
+      <p>Last updated: {new Date().toLocaleString()}</p>
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import TicketCard from "./components/TicketCard";
+import CreateTicketForm from "./components/CreateTicketForm";
 
 type Ticket = {
   id: number;
@@ -13,10 +14,13 @@ type Ticket = {
 function App() {
   const [tickets, setTickets] = useState<Ticket[]>([]);
 
-  useEffect(() => {
+  function loadTickets() {
     fetch("http://localhost:8080/tickets")
       .then((response) => response.json())
       .then((data) => setTickets(data));
+  }
+  useEffect(() => {
+    loadTickets();
   }, []);
 
   return (
@@ -30,8 +34,10 @@ function App() {
           status={ticket.status}
           priority={ticket.priority}
           assignee={ticket.assignee}
+          
         />
       ))}
+      <CreateTicketForm loadTickets={loadTickets} />
     </main>
   );
 }
