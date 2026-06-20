@@ -18,7 +18,7 @@ function App() {
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [priorityFilter, setPriorityFilter] = useState("ALL");
-
+  const [searchFilter, setSearchFilter] = useState("");
 
 
   function loadTickets() {
@@ -35,13 +35,24 @@ function App() {
       statusFilter === "ALL" || ticket.status === statusFilter;
     const matchesPriority =
     priorityFilter === "ALL" || ticket.priority === priorityFilter;
+    const matchesSearch = 
+      searchFilter === "" || ticket.description.toLowerCase().includes(searchFilter) || ticket.title.toLowerCase().includes(searchFilter); 
 
-  return matchesStatus && matchesPriority;
+  return matchesStatus && matchesPriority && matchesSearch;
+
+
+
   });
   return (
     <main>
       <h1>Issue Tracker</h1>
       <div className="filters">
+      <input
+            type="text"
+            placeholder="Search"
+            value={searchFilter}
+            onChange={(e) => setSearchFilter(e.target.value)}
+        /> 
         <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
           <option value="ALL">All Statuses</option>
           <option value="OPEN">Open</option>
