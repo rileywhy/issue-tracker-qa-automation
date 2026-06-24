@@ -2,6 +2,8 @@ package com.riley.issuetracker;
 
 import java.util.List;
 
+import org.apache.catalina.connector.Response;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,13 +36,13 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequest request) {
+    public boolean login(@RequestBody LoginRequest request) {
 
         User user = userRepository.findByEmail(request.getEmail());
 
     // 2. User doesn't exist
     if (user == null) {
-        return "Invalid email or password";
+        return false;
     }
 
     // 3. Compare passwords
@@ -51,10 +53,10 @@ public class UserController {
 
     // 4. Return result
     if (matches) {
-        return "Login successful";
+        return true;
     }
 
-    return "Invalid email or password";
+    return false;
     }
 
     @PostMapping("/register")

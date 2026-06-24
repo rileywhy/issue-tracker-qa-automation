@@ -210,3 +210,36 @@
 .navbar a:hover {
   background-color: #333;
 }
+
+.account-menu {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 1000;
+}
+
+.account-button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.account-dropdown {
+  position: absolute;
+  right: 0;
+  margin-top: 8px;
+  padding: 8px;
+  border-radius: 6px;
+  background: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.logout-button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 100%;
+}

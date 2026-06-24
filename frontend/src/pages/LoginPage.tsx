@@ -2,18 +2,20 @@ import { useState } from "react";
 
 type LoginPageProps = {
 setIsLoggedIn: (value: boolean) => void;
+setUserName: (value: string) => void;
 };
-function LoginPage({ setIsLoggedIn }: LoginPageProps) {
+function LoginPage({ setIsLoggedIn, setUserName }: LoginPageProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+
   
 
 
-  function handleLogin(event: React.FormEvent) {
+  async function handleLogin(event: React.FormEvent) {
     event.preventDefault();
 
-    fetch("http://localhost:8080/login", {
+    const response = await fetch("http://localhost:8080/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -23,19 +25,15 @@ function LoginPage({ setIsLoggedIn }: LoginPageProps) {
         password,
       }),
     })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Login failed");
+      const isLoggedIn = await response.json();
+
+        if (isLoggedIn) {
+            setIsLoggedIn(true);
+            setUserName(email);
+            setMessage("Login successful!");
+        } else {
+            setMessage("Invalid email or password.");
         }
-        return response.text();
-      })
-      .then(() => {
-        setMessage("Login successful");
-        setIsLoggedIn(true);
-      })
-      .catch(() => {
-        setMessage("Invalid email or password");
-      });
   }
 
   return (
