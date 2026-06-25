@@ -6,5 +6,5 @@ test("register a user", async ({ page }) => {
     await registerUser(page, User);
 
     //<p>Account created successfully!</p>
-    await expect(page.getByText("Account created successfully!"));
+    await expect(page.getByText("Account created successfully!")).toBeVisible();
 });

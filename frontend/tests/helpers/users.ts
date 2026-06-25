@@ -9,7 +9,7 @@ export type TestUser = {
 };
 
 export async function registerUser(page: Page, user: TestUser) {
-  await page.goto('http://localhost:5173/register');
+  await page.goto('/register');
 
   await page.getByPlaceholder('First name').fill(user.firstName);
   await page.getByPlaceholder('Last name').fill(user.lastName);
@@ -36,5 +36,20 @@ export function makeTestUser() {
     email: `john.smith.${id}@test.local`,
     password: 'password',
   };
+}
+
+export async function loginUser(page: Page, user: TestUser) {
+  await page.goto('/login');
+  await page.getByPlaceholder('Email').fill(user.email);
+  await page.getByPlaceholder('Password').fill(user.password);
+
+  await Promise.all([
+    page.waitForResponse(
+      response =>
+        response.url().includes('/login') &&
+        response.request().method() === 'POST'
+    ),
+    page.getByRole('button', { name: 'Log In' }).click(),
+  ]);
 }
 
