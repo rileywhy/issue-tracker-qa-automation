@@ -1,2 +1,6 @@
 .DS_Store
 .vscode/
+test-results/
+playwright-report/
+frontend/test-results/
+frontend/playwright-report/

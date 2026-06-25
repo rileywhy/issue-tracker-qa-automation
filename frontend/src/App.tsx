@@ -7,11 +7,17 @@ import AccountMenu from "./pages/AccountMenu";
 import "./App.css";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
   const [userName, setUserName] = useState("");
 
+  type CurrentUser = {
+    firstName: string;
+    lastName: string;
+    email: string;
+  }
+
   function handleLogout() {
-    setIsLoggedIn(false);
+    setCurrentUser(null);
     setUserName("");
   }
 
@@ -24,21 +30,21 @@ function App() {
         <Link to="/tickets">Tickets</Link>
       </nav>
 
-      {isLoggedIn && <AccountMenu name={userName} onLogout={handleLogout} />}
+      {currentUser!== null && <AccountMenu name={currentUser.firstName+" "+currentUser.lastName} onLogout={handleLogout} />}
 
       <Routes>
         <Route path="/" element={<h1>Welcome</h1>} />
 
         <Route
           path="/login"
-          element={<LoginPage setIsLoggedIn={setIsLoggedIn} setUserName={setUserName} />}
+          element={<LoginPage setCurrentUser={setCurrentUser} />}
         />
 
         <Route path="/register" element={<RegisterPage />} />
 
         <Route
           path="/tickets"
-          element={isLoggedIn ? <TicketPage /> : <Navigate to="/login" />}
+          element={currentUser !== null ? <TicketPage /> : <Navigate to="/login" />}
         />
       </Routes>
     </>

@@ -1,16 +1,19 @@
 import { useState } from "react";
 
-type LoginPageProps = {
-setIsLoggedIn: (value: boolean) => void;
-setUserName: (value: string) => void;
+type CurrentUser = {
+  firstName: string;
+  lastName: string;
+  email: string;
 };
-function LoginPage({ setIsLoggedIn, setUserName }: LoginPageProps) {
+
+type LoginPageProps = {
+  setCurrentUser: (user: CurrentUser) => void;
+};
+
+function LoginPage({ setCurrentUser }: LoginPageProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-
-  
-
 
   async function handleLogin(event: React.FormEvent) {
     event.preventDefault();
@@ -24,16 +27,18 @@ function LoginPage({ setIsLoggedIn, setUserName }: LoginPageProps) {
         email,
         password,
       }),
-    })
-      const isLoggedIn = await response.json();
+    });
 
-        if (isLoggedIn) {
-            setIsLoggedIn(true);
-            setUserName(email);
-            setMessage("Login successful!");
-        } else {
-            setMessage("Invalid email or password.");
-        }
+    if (!response.ok) {
+      setMessage("Invalid email or password.");
+      return;
+    }
+
+    const user = await response.json();
+    console.log(user);
+
+    setCurrentUser(user);
+    setMessage("Login successful!");
   }
 
   return (

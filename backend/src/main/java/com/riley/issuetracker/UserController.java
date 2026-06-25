@@ -3,6 +3,7 @@ package com.riley.issuetracker;
 import java.util.List;
 
 import org.apache.catalina.connector.Response;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 
 @RestController
 public class UserController {
@@ -30,34 +33,32 @@ public class UserController {
         return userRepository.findAll();
     }
 
-    @GetMapping("/user/{id}")
-    public User getUser(@PathVariable Long id) {
-        return userRepository.findById(id).orElse(null);
-    }
+   @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
 
-    @PostMapping("/login")
-    public boolean login(@RequestBody LoginRequest request) {
+    User user = userRepository.findByEmail(request.getEmail());
 
-        User user = userRepository.findByEmail(request.getEmail());
-
-    // 2. User doesn't exist
     if (user == null) {
-        return false;
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
-    // 3. Compare passwords
     boolean matches = passwordEncoder.matches(
         request.getPassword(),
         user.getPassword()
     );
 
-    // 4. Return result
-    if (matches) {
-        return true;
+    if (!matches) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
-    return false;
-    }
+    LoginResponse response = new LoginResponse(
+        user.getFirstName(),
+        user.getLastName(),
+        user.getEmail()
+    );
+
+    return ResponseEntity.ok(response);
+}
 
     @PostMapping("/register")
     public User register(@RequestBody User user) {
