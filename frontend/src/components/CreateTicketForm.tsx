@@ -22,7 +22,7 @@ function CreateTicketForm({ loadTickets
     function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
 
-  fetch("http://localhost:8080/ticket", {
+  fetch("/ticket", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
