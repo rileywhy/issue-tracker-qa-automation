@@ -11,7 +11,7 @@ function RegisterPage() {
   function handleRegister(event: React.FormEvent) {
     event.preventDefault();
 
-    fetch("http://localhost:8080/register", {
+    fetch("/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

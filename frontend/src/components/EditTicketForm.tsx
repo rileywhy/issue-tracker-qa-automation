@@ -21,7 +21,7 @@ function EditTicketForm({ ticket, onUpdate, onCancel }: EditTicketFormProps) {
   const [editedAssignee, setEditedAssignee] = useState(ticket.assignee);
 
   function updateTicket() {
-    fetch(`http://localhost:8080/ticket/${ticket.id}`, {
+    fetch(`/ticket/${ticket.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

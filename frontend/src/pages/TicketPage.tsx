@@ -22,7 +22,7 @@ function TicketPage() {
 
 
   function loadTickets() {
-    fetch("http://localhost:8080/tickets")
+    fetch("/tickets")
       .then((response) => response.json())
       .then((data) => setTickets(data));
   }

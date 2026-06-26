@@ -79,7 +79,7 @@ function TicketCard({
   
 
   function deleteTicket() {
-    fetch(`http://localhost:8080/ticket/${id}`, {
+    fetch(`/ticket/${id}`, {
       method: "DELETE",
     }).then(() => {
       onDelete();
