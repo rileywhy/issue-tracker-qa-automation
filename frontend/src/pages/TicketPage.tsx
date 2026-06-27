@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import TicketCard from "../components/TicketCard";
 import CreateTicketForm from "../components/CreateTicketForm";
 import "../App.css";
@@ -23,19 +23,35 @@ function TicketPage({ token }: TicketPageProps) {
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [priorityFilter, setPriorityFilter] = useState("ALL");
   const [searchFilter, setSearchFilter] = useState("");
+  const [message, setMessage] = useState("");
 
-  function loadTickets() {
+  const loadTickets = useCallback(() => {
     fetch("/tickets", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
-      .then((response) => response.json())
-      .then((data) => setTickets(data));
-  }
+      .then((response) => {
+        if (!response.ok) {
+          setMessage(`Could not load tickets (${response.status}).`);
+          return null;
+        }
+
+        return response.json();
+      })
+      .then((data) => {
+        if (data === null) {
+          return;
+        }
+
+        setTickets(data);
+        setMessage("");
+      });
+  }, [token]);
+
   useEffect(() => {
     loadTickets();
-  }, []);
+  }, [loadTickets]);
 
   const filteredTickets = tickets.filter((ticket) => {
     const matchesStatus =
@@ -79,6 +95,7 @@ function TicketPage({ token }: TicketPageProps) {
           <option value="CRITICAL">Critical</option>
         </select>
       </div>
+      {message && <p role="alert">{message}</p>}
       {filteredTickets.map((ticket) => (
         <TicketCard
           key={ticket.id}

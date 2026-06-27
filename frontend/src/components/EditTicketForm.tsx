@@ -12,11 +12,7 @@ type EditTicketFormProps = {
   onUpdate: () => void;
   onCancel: () => void;
   token: string;
-
 };
-
-
-
 
 function EditTicketForm({ ticket, onUpdate, onCancel, token }: EditTicketFormProps) {
   const [editedTitle, setEditedTitle] = useState(ticket.title);
@@ -39,7 +35,11 @@ function EditTicketForm({ ticket, onUpdate, onCancel, token }: EditTicketFormPro
         priority: editedPriority,
         assignee: editedAssignee,
       }),
-    }).then(() => {
+    }).then((response) => {
+      if (!response.ok) {
+        return;
+      }
+
       onUpdate();
       onCancel();
     });
