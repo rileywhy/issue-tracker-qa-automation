@@ -12,9 +12,7 @@ test.beforeEach(async ({ page }) => {
   await loginUser(page, user);
 
   await page.getByRole('link', { name: 'Tickets' }).click();
-  await expect(
-    page.getByRole('heading', { name: 'Issue Tracker' })
-  ).toBeVisible();
+  await expect(page.locator('form.create-ticket-form')).toBeVisible();
 });
 
 test('creates a ticket', async ({ page }) => {
